@@ -1,8 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {Blog} from "../blogs/blog.entity"
+import {UserLikeBlog} from '../likes/user-like-blog.entity';
+
 //import { Timestamp } from "rxjs";
 
 @Entity()
-export class UserTable {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,7 +18,11 @@ export class UserTable {
   @Column()
   password: string;
 
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs: Blog[];
 
+  @OneToMany(() => UserLikeBlog, (like) => like.user)
+  likes: UserLikeBlog[];
   // @Column({default:TIME})
   // created_at: Timestamp<string>
 
