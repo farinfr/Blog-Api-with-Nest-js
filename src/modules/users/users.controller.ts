@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { CreateUserDto, FindUserDto, UpdateUserDto } from "./dto";
+import { CreateUserDto, FindUserDto, UpdateUserDto } from "./users.dto";
 import { ResControllerInterfaces } from "../../interfaces/resController.interfaces";
 import { ResStatusEnum } from "../../enum/resStatus.enum";
 import {AuthService} from '../auth/auth.service';
@@ -64,6 +64,7 @@ export class UserController {
   async findUser(@Body() findUserDio : FindUserDto):Promise<ResControllerInterfaces>
   {
     const result = await this.userService.findOne(findUserDio);
+
     if(result.statusCode !== ResStatusEnum.SUCCESS){
       return {
         statusCode:result.statusCode,

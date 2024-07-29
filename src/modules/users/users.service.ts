@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { UserTable } from "./user.entity";
-import { CreateUserDto, FindUserDto, UpdateUserDto } from "./dto";
+import { User } from "./user.entity";
+import { CreateUserDto, FindUserDto, UpdateUserDto } from "./users.dto";
 import { ResFunctionInterfaces } from "../../interfaces/resFunction.interfaces";
 import { ResStatusEnum } from "../../enum/resStatus.enum";
 
@@ -10,15 +10,15 @@ import { ResStatusEnum } from "../../enum/resStatus.enum";
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(UserTable)
-    private usersRepository: Repository<UserTable>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
   async creat(user: CreateUserDto):Promise<ResFunctionInterfaces>
   {
 
     try {
-      let newUser = new UserTable();
+      let newUser = new User();
       newUser.username = user.username;
       newUser.email = user.email;
       newUser.password = user.password;
@@ -55,7 +55,7 @@ export class UsersService {
   async findOne(user:FindUserDto):Promise<ResFunctionInterfaces>
   {
     try{
-      const u = new UserTable();
+      const u = new User();
       u.email = user.email;
       u.password = user.password;
       if(await this.usersRepository.findOneBy(u)){
