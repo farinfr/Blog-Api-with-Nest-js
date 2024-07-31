@@ -3,11 +3,8 @@ import {
   Post,
   Body,
   Get,
-  UseGuards,
   Param,
-  Req,
   InternalServerErrorException,
-  Query,
 } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { AuthGuard } from '../auth/auth.guard';
@@ -20,7 +17,7 @@ import { User } from '../users/user.entity';
 export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post("createBlog/:userId")
   async createBlog(@Body() createBlogDio : CreateBlogDto,@Param() userIdDto: UserIdDto):Promise<ResControllerInterfaces> {
 
@@ -40,7 +37,7 @@ export class BlogsController {
     }
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get("getBlogs")
   async getBlogs():Promise<ResControllerInterfaces> {
       try{

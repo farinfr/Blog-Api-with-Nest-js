@@ -13,7 +13,7 @@ export class UserLikeBlogController {
     private readonly authService: AuthService,
   ) {}
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('likeBlog/:userId')
   async likeBlog(@Body() blogIdDto: BlogIdDto, @Param() userIdDto: UserIdDto):Promise<ResControllerInterfaces> {
 
