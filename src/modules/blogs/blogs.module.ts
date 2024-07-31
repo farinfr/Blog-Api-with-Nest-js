@@ -10,7 +10,6 @@ import { User } from '../users/user.entity';
   imports: [
     TypeOrmModule.forFeature([Blog , User]),
     AuthModule,
-
   ],
   controllers: [BlogsController],
   providers: [BlogsService],

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { AuthGuard } from '../auth/auth.guard';
@@ -12,10 +13,14 @@ import { CreateBlogDto ,UserIdDto } from './blogs.dto';
 import { ResControllerInterfaces } from '../../interfaces/resController.interfaces';
 import { ResStatusEnum } from '../../enum/resStatus.enum';
 import { User } from '../users/user.entity';
+import { AuthService } from '../auth/auth.service';
 
 @Controller()
 export class BlogsController {
-  constructor(private readonly blogsService: BlogsService) {}
+  constructor(
+    private readonly blogsService: BlogsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post("createBlog/:userId")
