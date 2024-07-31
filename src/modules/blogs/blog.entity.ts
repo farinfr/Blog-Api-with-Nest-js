@@ -13,6 +13,9 @@ export class Blog {
   @Column()
   content: string;
 
+  @Column({ default: 0 })
+  likeCount: number;
+
   @ManyToOne(() => User, (user) => user.blogs)
   user: User;
 
