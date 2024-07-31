@@ -3,11 +3,11 @@ import { IsNotEmpty } from 'class-validator';
 // export class ListAllEntitiesDto {
 //   users: UserInterface[];
 // }
-export class LikeBlogIdDto {
+export class BlogIdDto {
   @IsNotEmpty()
   blogId: number;
 }
-export class LikeUserIdDto {
+export class UserIdDto {
   @IsNotEmpty()
   userId: number;
 }

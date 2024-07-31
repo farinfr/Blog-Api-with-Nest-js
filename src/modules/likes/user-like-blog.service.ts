@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserLikeBlog } from './user-like-blog.entity';
 import { Blog } from '../blogs/blog.entity';
 import { User } from '../users/user.entity';
+import { ResFunctionInterfaces } from '../../interfaces/resFunction.interfaces';
+import { ResStatusEnum} from '../../enum/resStatus.enum';
+import { UserIdDto } from '../blogs/blogs.dto';
+import { BlogIdDto } from './user-like-blog.dto';
 
 @Injectable()
 export class UserLikeBlogService {
@@ -16,23 +20,37 @@ export class UserLikeBlogService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async likeBlog(userId: number, blogId: number): Promise<String> {
+  async likeBlog(user: UserIdDto, blog: BlogIdDto):Promise<ResFunctionInterfaces> {
     try {
       const newLike = new UserLikeBlog()
-      const user = await this.usersRepository.findOneBy({ id: userId });
-      const blog = await this.blogsRepository.findOneBy({ id: blogId });
-
-      const u = await this.userLikeBlogRepository.findOneBy({user: user , blog:blog})
-      if(u){
-        return "The user has already liked!!"
+      const userFined = await this.usersRepository.findOneBy({ id: user.userId });
+      const blogFined = await this.blogsRepository.findOneBy({ id: blog.blogId });
+      if (!userFined){
+        throw new NotFoundException("userId is incorrect!");
       }
-      newLike.user = user;
-      newLike.blog =blog;
-      await this.blogsRepository.increment({ id: blogId } , 'likeCount' , 1);
+      if (!blogFined){
+        throw new NotFoundException("blogId is incorrect!");
+      }
+
+      const u = await this.userLikeBlogRepository.findOneBy({user: userFined , blog:blogFined})
+      if(u){
+        return {
+        message:"The user has already liked",
+          data :{},
+        statusCode : ResStatusEnum.FAULT
+        };
+      }
+      newLike.user = userFined;
+      newLike.blog = blogFined;
+      await this.blogsRepository.increment({ id: blog.blogId } , 'likeCount' , 1);
       await this.userLikeBlogRepository.save(newLike);
     }catch (err){
-      return err.message;
+      throw new InternalServerErrorException(err.message);
     }
-    return "Successes"
+    return {
+      message:"The user liked blog",
+      data :{},
+      statusCode : ResStatusEnum.SUCCESS
+    };
   }
 }

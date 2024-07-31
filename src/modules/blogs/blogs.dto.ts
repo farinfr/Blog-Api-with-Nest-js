@@ -1,9 +1,5 @@
-// import { UserInterface } from "./interfaces/user.interface";
 import { IsNotEmpty } from 'class-validator';
 
-// export class ListAllEntitiesDto {
-//   users: UserInterface[];
-// }
 
 export class CreateBlogDto {
   @IsNotEmpty()
@@ -11,6 +7,10 @@ export class CreateBlogDto {
 
   @IsNotEmpty()
   content: string;
+
+}
+
+export class UserIdDto {
 
   @IsNotEmpty()
   userId: number;
