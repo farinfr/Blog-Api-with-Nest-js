@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { CreateUserDto, FindUserDto, UpdateUserDto } from "./users.dto";
+import { CreateUserDto, FindUserDto } from "./users.dto";
 import { ResControllerInterfaces } from "../../interfaces/resController.interfaces";
 import { ResStatusEnum } from "../../enum/resStatus.enum";
 import {AuthService} from '../auth/auth.service';
@@ -12,26 +12,6 @@ export class UserController {
     private readonly authService: AuthService,
   ) {}
 
-  // @Get('getAllUser')
-  // async getAllUsers():Promise<ResControllerInterfaces>
-  // {
-  //
-  //   const result = await this.userService.findAll();
-  //   if(result.statusCode !== ResStatusEnum.SUCCESS){
-  //     return {
-  //       statusCode:result.statusCode,
-  //       message:[result.message],
-  //       data:result.data
-  //     }
-  //
-  //   }
-  //   return {
-  //     statusCode:ResStatusEnum.SUCCESS,
-  //     message:[result.message],
-  //     data:result.data
-  //   }
-  //   //return "get all users";
-  // }
 
   @Post('signUp')
   async create(@Body() createUserDto : CreateUserDto):Promise<ResControllerInterfaces>
@@ -81,44 +61,5 @@ export class UserController {
     }
 
   }
-
-  // @Patch('update')
-  // async updateUser(@Body() updateUserDto : UpdateUserDto):Promise<ResControllerInterfaces>
-  // {
-  //   const result = await this.userService.update(updateUserDto);
-  //   if(result.statusCode !== ResStatusEnum.SUCCESS){
-  //     return {
-  //       statusCode:result.statusCode,
-  //       message:[result.message],
-  //       data:result.data
-  //     }
-  //
-  //   }
-  //   return {
-  //     statusCode:ResStatusEnum.SUCCESS,
-  //     message:[result.message],
-  //     data:result.data
-  //   }
-  // }
-
-
-  // @Delete('deleteUser/:id')
-  // async deleteUser(@Param('id',ParseIntPipe) id:number ,):Promise<ResControllerInterfaces>
-  // {
-  //   const result =await this.userService.delete(id);
-  //   if(result.statusCode !== ResStatusEnum.SUCCESS){
-  //     return {
-  //       statusCode:result.statusCode,
-  //       message:[result.message],
-  //       data:result.data
-  //     }
-  //
-  //   }
-  //   return {
-  //     statusCode:ResStatusEnum.SUCCESS,
-  //     message:[result.message],
-  //     data:result.data
-  //   }
-  // }
 
 }
